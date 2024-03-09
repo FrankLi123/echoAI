@@ -1,6 +1,7 @@
 import pgPromise from 'pg-promise';
 import { v4 as uuidv4 } from 'uuid';
 import * as dotenv from "dotenv";
+import exp from 'constants';
 
 // Load environment variables
 dotenv.config();
@@ -88,6 +89,13 @@ export async function getChatbot(model_id: string) {
     'SELECT * FROM Chatbot WHERE model_id=$1',
     [model_id]
   );
+}
+
+export async function isExistingChatbot(bot_name: string) {
+    return await db.oneOrNone(
+        'SELECT * FROM Chatbot WHERE name=$1',
+        [bot_name]
+    );
 }
 
 // Get all chatbots created by a user

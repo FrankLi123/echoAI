@@ -1,7 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import {initializeDatabase, getChatHistory, appendChatHistory, addUserChatbot, getChatbot, getChatbotsByUser} from "./db";
+import {initializeDatabase, getChatHistory, appendChatHistory, addUserChatbot, getChatbot, getChatbotsByUser, isExistingChatbot} from "./db";
 import { chatTo } from "./chatbot";
 import { v4 as uuidv4 } from "uuid";
 // Load environment variables
@@ -62,6 +62,17 @@ app.post("/api/createBot", async (req, res) => {
 
     if(!user_address || !bot_name || !material) {
         return res.status(400).send({ error: "Required field is missing" });
+    }
+
+    // to-do if there exists a bot with the same name, return the existing bot
+    try {
+        const isExist = await isExistingChatbot(bot_name);
+        if(isExist) {
+            const bot = await getChatbot(bot_name);
+            return res.status(200).send({ model_id: bot.model_id, name: bot_name });
+        }
+    } catch (error) {
+        return res.status(500).send({ error: (error as Error).message });
     }
 
     try {
