@@ -68,6 +68,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 <ul className="menu menu-horizontal px-1">
                     <li>
                         <button
+                            disabled={minting}
                             onClick={() => {
                                 if (identityMinted) {
                                     const modal = document.getElementById("indentityModal")
@@ -92,7 +93,7 @@ const NavBar: React.FC<NavBarProps> = ({
                             )}
                         </button>
                     </li>
-                    <IdentityModal accountInfo={accountInfo} />
+                    <IdentityModal accountInfo={accountInfo} minting={minting} />
                     <li>
                         <NearWallet
                             accountInfo={accountInfo}
