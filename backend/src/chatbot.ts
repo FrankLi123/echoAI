@@ -3,6 +3,8 @@ import axios from "axios";
 import fs from 'fs';
 import FormData from 'form-data';
 
+const chatPrompt = "Respond to a chat according to your background material, and the chat history of that user";
+
 export async function chatTo(
   model_id: string,
   FLOCK_BOT_ENDPOINT: string,
@@ -15,7 +17,7 @@ export async function chatTo(
   try {
     // Construct the request payload
     const payload = {
-      question: prompt,
+      question: chatPrompt,
       chat_history: chat_history,
       knowledge_source_id: model_id,
     };
