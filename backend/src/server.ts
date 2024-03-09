@@ -15,7 +15,7 @@ const app = express();
 app.use(cors({
     origin: 'https://echo-ai-zeta.vercel.app'
 }));
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8081;
 
 // Initialize the database
 initializeDatabase();

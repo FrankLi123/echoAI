@@ -97,6 +97,3 @@ export async function getChatbotsByUser(user_address: string) {
     [user_address]
   );
 }
-
-
-export default db;
