@@ -53,7 +53,7 @@ const NearWallet: React.FC<NearWalletProps> = ({ accountInfo, setAccountInfo }) 
             })
 
             const walletModal = setupModal(walletSelector, {
-                contractId: "echo-ai.testnet",
+                contractId: "echoai.prelaunch.testnet",
             })
 
             setModal(walletModal)
