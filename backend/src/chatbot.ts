@@ -46,13 +46,12 @@ export async function chatTo(
 
 
 // createModel() function
-
 const writeFileAsync = promisify(fs.writeFile);
 const unlinkAsync = promisify(fs.unlink);
 
 async function submitFixedTextFile(modelId: string, walletAddress: string): Promise<void> {
   const tempFilePath = 'fixed_message.txt';
-  const fixedContent = 'this is a testing message';
+  const fixedContent = 'testing message';
 
   // Create a temporary txt file with the fixed content
   await writeFileAsync(tempFilePath, fixedContent, 'utf8');
@@ -78,7 +77,6 @@ async function submitFixedTextFile(modelId: string, walletAddress: string): Prom
     console.log('File submitted successfully:', response.data);
   } catch (error) {
     if (typeof error === 'object' && error !== null && 'message' in error) {
-      // Now TypeScript knows `error` is an object and has a `message` property
       console.error('Error message:', error.message);
     } else {
       console.error('An unknown error occurred');
