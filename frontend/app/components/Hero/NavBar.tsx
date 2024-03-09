@@ -1,10 +1,41 @@
+"use client"
 import Link from "next/link"
 import NearWallet from "../Auth/NearWallet"
 import Image from "next/image"
+import { AccountInfo } from "@/app/page"
+import { useToast } from "../PlugIn/ToastProvider"
+import { useState } from "react"
 
-const NavBar: React.FC = () => {
+interface NavBarProps {
+    accountInfo: AccountInfo | null
+    setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo | null>>
+}
+
+const NavBar: React.FC<NavBarProps> = ({ accountInfo, setAccountInfo }) => {
+    const [minting, setMinting] = useState<boolean>(false)
+    const { showToast } = useToast()
+    const handleMint = async () => {
+        if (accountInfo === null || accountInfo.accountId === "") {
+            showToast("Please connect wallet to mint your identity!", "info")
+        } else {
+            setMinting(true)
+            showToast("minting your identity, please wait...", "success")
+            const res = await fetch(
+                `https://gba-api.thefans.life/near/nft/mint?receiver=${accountInfo.accountId}&data=testing`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+            const data = await res.json()
+            showToast("Success! check transaction: " + data.response, "success")
+            setMinting(false)
+        }
+    }
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar ">
             <div className="flex-1">
                 <a className="btn btn-ghost">
                     <Image
@@ -23,10 +54,23 @@ const NavBar: React.FC = () => {
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
                     <li>
-                        <button>Mint your identity</button>
+                        <button
+                            onClick={() => {
+                                handleMint()
+                            }}
+                        >
+                            {!minting ? (
+                                "Mint your identity"
+                            ) : (
+                                <>
+                                    <div>minting..</div>
+                                    <span className="loading loading-spinner text-secondary"></span>
+                                </>
+                            )}
+                        </button>
                     </li>
                     <li>
-                        <NearWallet />
+                        <NearWallet accountInfo={accountInfo} setAccountInfo={setAccountInfo} />
                     </li>
                 </ul>
             </div>

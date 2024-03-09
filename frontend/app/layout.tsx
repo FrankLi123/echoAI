@@ -16,7 +16,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" data-theme="synthwave">
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                {children}
+            </body>
         </html>
     )
 }
