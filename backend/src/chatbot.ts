@@ -4,7 +4,8 @@ export async function chatTo(
   model_id: string,
   FLOCK_BOT_ENDPOINT: string,
   FLOCK_BOT_API_KEY: string,
-  prompt: string
+  prompt: string,
+  chat_history: string[]
 ) {
   console.log("Prompt:", prompt);
 
@@ -12,7 +13,7 @@ export async function chatTo(
     // Construct the request payload
     const payload = {
       question: prompt,
-      chat_history: [],
+      chat_history: chat_history,
       knowledge_source_id: model_id,
     };
 

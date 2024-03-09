@@ -1,7 +1,8 @@
 import express from "express";
-import axios from "axios";
 import * as dotenv from "dotenv";
 import {initializeDatabase, getChatHistory, appendChatHistory, addUserChatbot, getChatbot, getChatbotsByUser} from "./db";
+import { chatTo } from "./chatbot";
+import { v4 as uuidv4 } from "uuid";
 
 // Load environment variables
 dotenv.config();
@@ -28,7 +29,8 @@ app.post("/api/chat", async (req, res) => {
 
     try {
         await appendChatHistory(user_address, model_id, message, true);
-        const response = "message processed"; // replace this with actual processing
+        const chat_history = await getChatHistory(user_address, model_id);
+        const response = await chatTo(model_id, FLOCK_BOT_ENDPOINT, FLOCK_BOT_API_KEY, message, chat_history);
         return res.status(200).send({ message: response, timestamp: new Date() });
     } catch (error) {
         return res.status(500).send({ error: (error as Error).message });
@@ -60,7 +62,7 @@ app.post("/api/createBot", async (req, res) => {
     }
 
     try {
-        const model_id = "model_id_generated"; // replace this with actual model id generation
+        const model_id = uuidv4();
         await addUserChatbot(user_address, model_id, bot_name);
         return res.status(200).send({ model_id, name: bot_name });
     } catch (error) {
@@ -83,6 +85,7 @@ app.get("/api/getAllChatbotsByUser", async (req, res) => {
         return res.status(500).send({ error: (error as Error).message });
     }
 });
+
 
 
 app.listen(port, () => {
