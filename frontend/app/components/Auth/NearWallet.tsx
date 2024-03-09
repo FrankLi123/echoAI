@@ -23,10 +23,16 @@ import { AccountInfo } from "@/app/page"
 interface NearWalletProps {
     accountInfo: AccountInfo | null
     setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo | null>>
+    walletSelector: WalletSelector | null
+    setWalletSelector: React.Dispatch<React.SetStateAction<WalletSelector | null>>
 }
 
-const NearWallet: React.FC<NearWalletProps> = ({ accountInfo, setAccountInfo }) => {
-    const [walletSelector, setWalletSelector] = useState<WalletSelector | null>(null)
+const NearWallet: React.FC<NearWalletProps> = ({
+    accountInfo,
+    setAccountInfo,
+    walletSelector,
+    setWalletSelector,
+}) => {
     const [modal, setModal] = useState<any>(null)
 
     useEffect(() => {
@@ -53,7 +59,7 @@ const NearWallet: React.FC<NearWalletProps> = ({ accountInfo, setAccountInfo }) 
             })
 
             const walletModal = setupModal(walletSelector, {
-                contractId: "echoai.prelaunch.testnet",
+                contractId: "echo.prelaunch.testnet",
             })
 
             setModal(walletModal)
