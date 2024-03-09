@@ -14,6 +14,7 @@ export interface AccountInfo {
 export default function Home() {
     const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null)
     const [walletSelector, setWalletSelector] = useState<WalletSelector | null>(null)
+    const [identityMinted, setIdentityMinted] = useState<boolean>(false)
 
     return (
         <ToastProvider>
@@ -23,9 +24,10 @@ export default function Home() {
                     accountInfo={accountInfo}
                     walletSelector={walletSelector}
                     setWalletSelector={setWalletSelector}
+                    identityMinted={identityMinted}
+                    setIdentityMinted={setIdentityMinted}
                 />
-                <Main />
-
+                <Main accountInfo={accountInfo}/>
                 {/* <ChatUi userName={UserName} /> */}
             </div>
         </ToastProvider>

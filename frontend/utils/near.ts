@@ -1,5 +1,6 @@
 import { WalletSelector } from "@near-wallet-selector/core"
 import { connect, keyStores, WalletConnection, Near, Account } from "near-api-js"
+import { v4 as uuidv4 } from "uuid"
 
 interface Metadata {
     copies: string | null
@@ -48,15 +49,14 @@ export async function mintNFT(walletSelector: WalletSelector, receiverId: string
     }
 
     const wallet = await walletSelector.wallet()
-
+    let hashed_data = data + "$#$" + uuidv4()
     try {
         const functionCallDetails = {
             methodName: "nft_mint",
-            args: { receiver_id: receiverId, data: data },
+            args: { receiver_id: receiverId, data: hashed_data },
             gas: "30000000000000",
-            deposit: "0",
+            deposit: "10000000000000000000000",
         }
-
         const result = await wallet.signAndSendTransaction({
             receiverId: contractId,
             actions: [

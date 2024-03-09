@@ -7,13 +7,16 @@ import { useToast } from "../PlugIn/ToastProvider"
 import { useEffect, useState } from "react"
 import { checkIfIdentityMinted, mintNFT } from "@/utils/near"
 import { WalletSelector } from "@near-wallet-selector/core"
-import IdentityModal from "../Auth/ViewIdentity"
+import IdentityModal from "../Auth/ModalVerify"
+import MintModal from "../Auth/ModalMint"
 
 interface NavBarProps {
     accountInfo: AccountInfo | null
     setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfo | null>>
     walletSelector: WalletSelector | null
     setWalletSelector: React.Dispatch<React.SetStateAction<WalletSelector | null>>
+    identityMinted: boolean
+    setIdentityMinted: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const NavBar: React.FC<NavBarProps> = ({
@@ -21,18 +24,20 @@ const NavBar: React.FC<NavBarProps> = ({
     setAccountInfo,
     walletSelector,
     setWalletSelector,
+    identityMinted,
+    setIdentityMinted,
 }) => {
     const [minting, setMinting] = useState<boolean>(false)
-    const [identityMinted, setIdentityMinted] = useState<boolean>(false)
     const { showToast } = useToast()
 
-    const handleMint = async () => {
+    const handleMint = async (data: string) => {
         setMinting(true)
         if (accountInfo?.accountId && walletSelector) {
-            const result = await mintNFT(walletSelector, accountInfo?.accountId, "")
+            const result = await mintNFT(walletSelector, accountInfo?.accountId, data)
+            console.log(result)
             if (result) {
                 showToast("Identity minted successfully", "success")
-                checkIfIdentity(accountInfo?.accountId)
+                // checkIfIdentity(accountInfo?.accountId)
             }
         } else {
             showToast("Please connect your wallet to mint your identity", "info")
@@ -74,21 +79,15 @@ const NavBar: React.FC<NavBarProps> = ({
                         <button
                             disabled={minting}
                             onClick={() => {
-                                if (identityMinted) {
-                                    const modal = document.getElementById("indentityModal")
-                                    if (modal instanceof HTMLDialogElement) {
-                                        modal.showModal()
-                                    }
-                                    return
-                                } else {
-                                    handleMint()
+                                const modal = document.getElementById("mintModal")
+                                if (modal instanceof HTMLDialogElement) {
+                                    modal.showModal()
                                 }
+                                return
                             }}
                         >
-                            {identityMinted ? (
-                                "View your identity"
-                            ) : !minting ? (
-                                "Mint your identity"
+                            {!minting ? (
+                                "Mint identity"
                             ) : (
                                 <>
                                     <div>minting..</div>
@@ -97,6 +96,11 @@ const NavBar: React.FC<NavBarProps> = ({
                             )}
                         </button>
                     </li>
+                    <MintModal
+                        accountInfo={accountInfo}
+                        minting={minting}
+                        handleMint={handleMint}
+                    />
                     <IdentityModal accountInfo={accountInfo} minting={minting} />
                     <li>
                         <NearWallet

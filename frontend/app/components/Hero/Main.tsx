@@ -1,11 +1,15 @@
 import React from "react"
 import Cards from "./Cards"
 import Verify from "../Auth/Verify"
+import { AccountInfo } from "@/app/page"
 
-const Main: React.FC = () => {
+interface MainProps {
+    accountInfo: AccountInfo | null
+}
+const Main: React.FC<MainProps> = ({ accountInfo }) => {
     return (
         <div className="w-full px-3 flex flex-row justify-between">
-            <Cards />
+            <Cards accountInfo={accountInfo} />
             <div>
                 <button
                     className="btn"
