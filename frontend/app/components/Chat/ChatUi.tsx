@@ -91,7 +91,7 @@ export default function ChatUi(props: { userName: string }) {
     }, [messages, loading])
 
     return (
-        <div className="w-full h-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-500">
+        <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-500">
             <div
                 className="flex flex-col h-screen max-w-[100%] p-2 lg:p-24 shadow-lg"
                 style={{ overflow: "hidden" }}

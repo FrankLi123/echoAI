@@ -1,6 +1,7 @@
 "use client"
 // LoginPage.js
 import { FC, useState } from "react"
+import NearWallet from "./NearWallet"
 
 const LoginPage: FC = () => {
     const [username, setUsername] = useState<string>("")
@@ -27,6 +28,7 @@ const LoginPage: FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleLogin}>Login</button>
+            
         </div>
     )
 }
