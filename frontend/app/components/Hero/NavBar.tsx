@@ -29,7 +29,11 @@ const NavBar: React.FC<NavBarProps> = ({
     const handleMint = async () => {
         setMinting(true)
         if (accountInfo?.accountId && walletSelector) {
-            await mintNFT(walletSelector, accountInfo?.accountId, "")
+            const result = await mintNFT(walletSelector, accountInfo?.accountId, "")
+            if (result) {
+                showToast("Identity minted successfully", "success")
+                checkIfIdentity(accountInfo?.accountId)
+            }
         } else {
             showToast("Please connect your wallet to mint your identity", "info")
         }
@@ -68,6 +72,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 <ul className="menu menu-horizontal px-1">
                     <li>
                         <button
+                            disabled={minting}
                             onClick={() => {
                                 if (identityMinted) {
                                     const modal = document.getElementById("indentityModal")
@@ -92,7 +97,7 @@ const NavBar: React.FC<NavBarProps> = ({
                             )}
                         </button>
                     </li>
-                    <IdentityModal accountInfo={accountInfo} />
+                    <IdentityModal accountInfo={accountInfo} minting={minting} />
                     <li>
                         <NearWallet
                             accountInfo={accountInfo}

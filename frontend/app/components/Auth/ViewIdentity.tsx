@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react"
 
 interface Props {
     accountInfo: AccountInfo | null
+    minting: boolean
 }
 
-const IdentityModal: React.FC<Props> = ({ accountInfo }) => {
+const IdentityModal: React.FC<Props> = ({ accountInfo, minting }) => {
     const [nftData, setNftData] = useState<NFTData | null>(null)
 
     const checkIdentity = async () => {
@@ -27,7 +28,7 @@ const IdentityModal: React.FC<Props> = ({ accountInfo }) => {
     }
     useEffect(() => {
         checkIdentity()
-    }, [accountInfo])
+    }, [accountInfo, minting])
 
     return (
         <dialog id="indentityModal" className="modal">
