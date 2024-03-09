@@ -1,0 +1,1 @@
+near deploy -f --wasmFile ../out/main.wasm  --accountId $NFT_CONTRACT_NAME

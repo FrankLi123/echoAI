@@ -1,0 +1,1 @@
+near view $NFT_CONTRACT_NAME nft_tokens

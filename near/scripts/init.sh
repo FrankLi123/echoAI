@@ -1,0 +1,1 @@
+near call $NFT_CONTRACT_NAME new "$(<init.json)"  --accountId=$NFT_CONTRACT_NAME
