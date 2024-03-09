@@ -1,10 +1,12 @@
-import ChatUi from "./components/Chat/ChatUi"
+import NavBar from "./components/Hero/NavBar"
 
 export default function Home() {
-    const UserName = "me"
+
     return (
-        <div className="w-full h-full bg-black">
-            <ChatUi userName={UserName} />
+        <div className="w-full h-full ">
+            <NavBar />
+
+            {/* <ChatUi userName={UserName} /> */}
         </div>
     )
 }
