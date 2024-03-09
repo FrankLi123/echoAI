@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import * as dotenv from "dotenv";
+import cors from "cors";
 
 // Load environment variables
 dotenv.config();
@@ -9,6 +10,9 @@ dotenv.config();
 const flock_endpoint: string = process.env.FLOCK_BOT_ENDPOINT || "none";
 
 const app = express();
+app.use(cors({
+    origin: 'https://echo-ai-zeta.vercel.app'
+}));
 const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Middleware to parse JSON bodies
