@@ -1,9 +1,9 @@
 import express from "express";
 import * as dotenv from "dotenv";
+import cors from "cors";
 import {initializeDatabase, getChatHistory, appendChatHistory, addUserChatbot, getChatbot, getChatbotsByUser} from "./db";
 import { chatTo } from "./chatbot";
 import { v4 as uuidv4 } from "uuid";
-
 // Load environment variables
 dotenv.config();
 
@@ -12,6 +12,9 @@ const FLOCK_BOT_ENDPOINT: string = process.env.FLOCK_BOT_ENDPOINT || "none";
 const FLOCK_BOT_API_KEY: string = process.env.FLOCK_BOT_API_KEY || "none";
 
 const app = express();
+app.use(cors({
+    origin: 'https://echo-ai-zeta.vercel.app'
+}));
 const port = process.env.PORT || 3000;
 
 // Initialize the database
