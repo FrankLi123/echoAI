@@ -47,6 +47,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         setIsVerified(true)
     }
 
+
     const handleSend = async (message: Message) => {
         const updatedMessages = [...messages, message];
     
@@ -55,19 +56,29 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     
         try {
             // Here's the new part: sending the message to your backend
+            // TO-DO: remove the fixed varialbe for model_id
+            let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
+            let address = "0x123";
+            console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
+            console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
+            console.log("accountAddress", accountAddress)
+            console.log(" message.content",  message.content)
+
+
+            const response = await fetch(`http://localhost:8081/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model_id: modelId,
-                    user_address: accountAddress,
+                    model_id: tempModelId,
+                    user_address: address,
                     message: message.content, // Assuming the message object has a content property with the text
                 }),
             });
     
+            console.log("!!!", response);
             console.log("in handleSend, modelId is :", modelId);
             console.log("in handleSend, message content is :", message.content);
 
@@ -91,10 +102,15 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
             
             setLoading(false);
         } catch (error) {
+            if (error instanceof Response) {
+                const errorData = await error.json();
+                console.error("Error data:", errorData);
+            }
             console.error("An error occurred while sending the message:", error);
             setLoading(false);
         }
     };
+
 
     const fetchChatHistory = async () => {
         if (!accountAddress || !modelId) {

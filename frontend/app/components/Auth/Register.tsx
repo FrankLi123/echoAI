@@ -61,12 +61,12 @@ const Register: React.FC<RegisterProps> = ({ onRegistrationSuccess }) => {
                 ) : (
                     <>
                         <h3 className="font-bold text-lg"> Register Your Own Identity: </h3>
-                        <p className="py-4">Please answer the following question:</p>
+                        <p className="py-4 text-white">Please answer the following question:</p>
 
-                        <p className="py-4">What is your Ideal lifestyle ? </p>
+                        <p className="py-4 text-white">What is your Ideal lifestyle ? </p>
                         {/* Input text area for the answer */}
                         <textarea
-                            className="border rounded-lg p-2 w-full"
+                            className="border rounded-lg p-2 w-full text-white"
                             placeholder="Your answer"
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}

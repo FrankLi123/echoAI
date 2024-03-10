@@ -67,12 +67,12 @@ const Verify: React.FC<VerifyProps>  = ({ onVerifySuccess }) => {
                 ) : (
                     <>
                         <h3 className="font-bold text-lg">Hello!</h3>
-                        <p className="py-4">Please answer the following question:</p>
-                        <p className="py-4"> What are your personality traits?</p>
+                        <p className="py-4 text-white">Please answer the following question:</p>
+                        <p className="py-4 text-white"> What are your personality traits?</p>
 
                         {/* Input text area for the answer */}
                         <textarea
-                            className="border rounded-lg p-2 w-full"
+                            className="border rounded-lg p-2 w-full text-white"
                             placeholder="Your answer"
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}

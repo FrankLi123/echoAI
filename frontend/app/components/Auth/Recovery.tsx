@@ -79,6 +79,7 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
     const handleClose = () => {
         // Close the dialog
         const modal = document.getElementById("recovery")
+
         if (modal instanceof HTMLDialogElement) {
             modal.close();
         }
@@ -88,8 +89,8 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
         <dialog id="recovery" className="modal">
             <div className="modal-box w-11/12 max-w-5xl">
                 <>
-                    <h3 className="font-bold text-lg">Hello!</h3>
-                    <p className="py-4">
+                    {/* <h3 className="font-bold text-lg">Hello!</h3> */}
+                    <p className="py-4 text-white">
                         to recovery identity, please follows all the steps below:
                     </p>
                     <label className="form-control w-full max-w-xs">
@@ -116,10 +117,10 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
                             onChange={(e) => setTokenID(e.target.value)}
                         />
                     </label>
-                    <p className="py-4"> What are your personality traits?</p>
+                    <p className="py-4 text-white"> What are your personality traits?</p>
                     {/* Input text area for the answer */}
                     <textarea
-                        className="border rounded-lg p-2 w-full"
+                        className="border rounded-lg p-2 w-full text-white"
                         placeholder="Your answer"
                         value={answer}
                         onChange={(e) => setAnswer(e.target.value)}

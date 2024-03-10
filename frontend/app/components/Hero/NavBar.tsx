@@ -69,13 +69,13 @@ const NavBar: React.FC<NavBarProps> = ({
                         alt="echologo"
                     />
                     <div className="flex flex-col">
-                        <div className="text-2xl text-left">Echo</div>
+                        <div className="text-2xl text-left text-white">Echo</div>
                     </div>
-                    <div className="text-sm text-left"> - Your personal digital identity</div>
+                    <div className="text-sm text-left text-white"> - Your personal digital identity</div>
                 </a>
             </div>
             <div className="flex-none">
-                <ul className="menu menu-horizontal px-1">
+                <ul className="menu menu-horizontal px-1 text-white">
                     <li>
                         <button
                             disabled={minting}
