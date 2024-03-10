@@ -75,7 +75,7 @@ app.post("/api/createBot", async (req, res) => {
         return res.status(400).send({ error: "Required field is missing" });
     }
 
-    // to-do if there exists a bot with the same name, return the existing bot
+    // if there exists a bot with the same name, return the existing bot
     // try {
     //     const isExist = await isExistingChatbot(bot_name);
     //     if(isExist) {
@@ -88,9 +88,6 @@ app.post("/api/createBot", async (req, res) => {
 
     try {
         const model_id = uuidv4();
-        // create chatbot using flock-api
-        // create verifybot using flock-api
-
         await addUserChatbot(user_address, model_id, bot_name);
         return res.status(200).send({ model_id, name: bot_name });
     } catch (error) {
@@ -139,8 +136,7 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/verify", async (req, res) => { 
     const { model_id, answer, user_address } = req.body;
-    // to-do: implement the verifySecret()
-    // to-do: transfer NFT to the user
+
     console.log("hello, /verify is triggered. the message is:", req);
 
     try{

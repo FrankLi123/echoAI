@@ -12,6 +12,7 @@ interface ChatUiProps {
     accountAddress: string
     botName: string
 }
+let TEMP_PUBLIC_API_URL = "http://52.35.36.1:8081";
 
 export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const [modelId, setModelId] = useState<number | null>(null)
@@ -54,6 +55,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         setMessages(updatedMessages);
         setLoading(true);
     
+    
         try {
             // Here's the new part: sending the message to your backend
             // TO-DO: remove the fixed varialbe for model_id
@@ -67,7 +69,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
             console.log(" message.content",  message.content)
 
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
+            const response = await fetch(`${TEMP_PUBLIC_API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +123,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/getAllChatHistory?user_address=${accountAddress}&model_id=${modelId}`,
+                `${TEMP_PUBLIC_API_URL}/api/getAllChatHistory?user_address=${accountAddress}&model_id=${modelId}`,
                 {
                     method: "GET",
                     headers: {
@@ -147,7 +149,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         const material = "x"
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createBot`, {
+            const response = await fetch(`${TEMP_PUBLIC_API_URL}/api/createBot`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -180,7 +182,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
                 // if (accountInfo) {
                     try {
                         const response = await axios.post(
-                            `${process.env.NEXT_PUBLIC_API_URL}/api/isRegistered`,
+                            `${TEMP_PUBLIC_API_URL}/api/isRegistered`,
                             {
                                 model_id: "your_model_id", // Adjust with actual logic to obtain the model_id
                                 user_address: "user_address",
