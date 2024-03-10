@@ -59,6 +59,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
             // TO-DO: remove the fixed varialbe for model_id
             let tempModelId = "1136c0c0-61c1-4eeb-a4ce-1a72f8e0ff11";
             let address = "0x123";
+
             console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
             console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)
 
@@ -66,7 +67,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
             console.log(" message.content",  message.content)
 
 
-            const response = await fetch(`http://localhost:8081/api/chat`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
