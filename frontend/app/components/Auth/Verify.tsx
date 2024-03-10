@@ -12,10 +12,8 @@ const Verify: React.FC = () => {
             const secrets = ['mock_secret_1', 'mock_secret_2'];
             const user_address = 'mock_user_address';
 
-            const apiUrl = 'http://localhost:8081/api/recover';
-
             // Send a POST request to the backend with the answer and mock data
-            const response = await axios.post(apiUrl, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/recover`, {
                 model_id,
                 secrets,
                 user_address,

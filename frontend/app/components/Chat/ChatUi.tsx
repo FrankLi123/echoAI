@@ -45,16 +45,19 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
 
 
             // TO-DO: remove the fixed varialbe for model_id
-            let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
+            // let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
 
+            console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
+            console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)
+            console.log("modelId is: ", modelId)
 
-            const response = await fetch('http://localhost:8081/api/chat', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    model_id: tempModelId,
+                    model_id: modelId,
                     user_address: accountAddress,
                     message: message.content, // Assuming the message object has a content property with the text
                 }),
@@ -140,13 +143,18 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
 
             const data = await response.json()
             setModelId(data.model_id)
+            
+            console.log("now the data is,    ", data.model_id);
+
+
         } catch (error) {
             console.error("There was a problem with the fetch operation:", error)
         }
     }
     
     useEffect(() => {
-        console.log("botName", botName)
+        console.log("botName:", botName)
+
         if (botName) {
             fetchModelId()
         }

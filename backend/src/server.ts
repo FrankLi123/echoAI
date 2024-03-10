@@ -66,15 +66,15 @@ app.post("/api/createBot", async (req, res) => {
     }
 
     // to-do if there exists a bot with the same name, return the existing bot
-    try {
-        const isExist = await isExistingChatbot(bot_name);
-        if(isExist) {
-            const bot = await getChatbot(bot_name);
-            return res.status(200).send({ model_id: bot.model_id, name: bot_name });
-        }
-    } catch (error) {
-        return res.status(500).send({ error: (error as Error).message });
-    }
+    // try {
+    //     const isExist = await isExistingChatbot(bot_name);
+    //     if(isExist) {
+    //         const bot = await getChatbot(bot_name);
+    //         return res.status(200).send({ model_id: bot.model_id, name: bot_name });
+    //     }
+    // } catch (error) {
+    //     return res.status(500).send({ error: (error as Error).message });
+    // }
 
     try {
         const model_id = uuidv4();
@@ -108,8 +108,11 @@ app.post("/api/recover", async (req, res) => {
     const { model_id, secrets, user_address } = req.body;
     // to-do: implement the verifySecret()
     // to-do: transfer NFT to the user
-
     console.log("hello, /recover is triggered.");
+
+
+
+
 
     return res.status(200).send(true);
 });

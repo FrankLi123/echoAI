@@ -17,6 +17,7 @@ const Cards: FC<CardsProps> = ({ accountInfo }) => {
             if (result.length > 0) {
                 console.log(result[result.length - 1])
                 setNftData(result)
+                console.log("All NFT Data:", result); 
             }
         }
     }
@@ -58,6 +59,7 @@ const Cards: FC<CardsProps> = ({ accountInfo }) => {
                                                     if (accountInfo?.accountId!) {
                                                         setAccountAddress(accountInfo?.accountId!)
                                                         setBotName(nftData.metadata.extra)
+                                                        // console.log("setBotName to -> ", nftData.metadata.extra);
                                                         modal.showModal()
                                                     }
                                                 }

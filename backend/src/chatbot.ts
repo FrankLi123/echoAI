@@ -3,7 +3,9 @@ import axios from "axios";
 import fs from 'fs';
 import FormData from 'form-data';
 
-const chatPrompt = "Respond to a chat according to your background material, and the chat history of that user";
+// const chatPrompt = "Respond to a chat according to your background material, and the chat history of that user";
+
+
 
 export async function chatTo(
   model_id: string,
@@ -14,6 +16,7 @@ export async function chatTo(
 ) {
   console.log("message:", message);
   console.log("Model ID:", model_id);
+  const chatPrompt = "please just answer the question to the user, question:" + chat_history[0];
   try {
     // Construct the request payload
     const payload = {
