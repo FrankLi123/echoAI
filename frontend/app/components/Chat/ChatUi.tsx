@@ -11,19 +11,11 @@ interface ChatUiProps {
 }
 
 export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
-    const [chatSessionId, setChatSessionId] = useState<number | null>(null)
-    const [chatSessions, setChatSessions] = useState<any[]>([])
+    const [modelId, setModelId] = useState<number | null>(null)
     const [messages, setMessages] = useState<Message[]>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [newChatLoading, setnewChatLoading] = useState<boolean>(false)
-    const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
-    const [deleteSuccess, setDeleSuccess] = useState<boolean>(false)
     const isMounted = useRef<boolean>(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
-    const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [isDropdownButtonVisible, setIsDropdownButtonVisible] = useState(true)
-    const [model, setModel] = useState<string>("Default")
-    const [explanation, setExplanation] = useState("")
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -32,12 +24,6 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
     const createNewChatSession = async () => {
-        setnewChatLoading(true)
-        setMessages([])
-        // setChatSessionId(data.chat_session_id);
-        setnewChatLoading(false)
-
-        // Set the default message from the assistant for the new chat session
         setMessages([
             {
                 role: "assistant",
@@ -74,14 +60,74 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     }
 
     const fetchChatHistory = async () => {
-        if (!chatSessionId) {
+        if (!accountAddress || !modelId) {
+            console.error("User address and model ID are required")
             return
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/getAllChatHistory?user_address=${accountAddress}&model_id=${modelId}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            const history = await response.json()
+            setMessages(history)
+        } catch (error) {
+            console.error("There was a problem with the fetch operation:", error)
         }
     }
 
+    const fetchModelId = async () => {
+        const user_address = accountAddress
+        const bot_name = botName
+        const material = "x"
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/createBot`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_address,
+                    bot_name,
+                    material,
+                }),
+            })
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            const data = await response.json()
+            setModelId(data.model_id)
+        } catch (error) {
+            console.error("There was a problem with the fetch operation:", error)
+        }
+    }
+    
     useEffect(() => {
-        fetchChatHistory()
-    }, [chatSessionId])
+        console.log("botName", botName)
+        if (botName) {
+            fetchModelId()
+        }
+    }, [botName])
+
+    useEffect(() => {
+        if (modelId) {
+            fetchChatHistory()
+        }
+    }, [modelId])
 
     useEffect(() => {
         if (!isMounted.current) {
@@ -124,11 +170,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
 
                     <div>
                         <div>
-                            <ChatInput
-                                onSend={handleSend}
-                                onFocus={() => setIsDropdownButtonVisible(false)}
-                                onBlur={() => setIsDropdownButtonVisible(true)}
-                            />
+                            <ChatInput onSend={handleSend} onFocus={() => {}} onBlur={() => {}} />
                         </div>
                     </div>
                 </div>
