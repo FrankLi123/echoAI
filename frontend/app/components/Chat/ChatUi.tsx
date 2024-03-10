@@ -12,7 +12,7 @@ interface ChatUiProps {
     accountAddress: string
     botName: string
 }
-let TEMP_PUBLIC_API_URL = "http://52.35.36.1:8081";
+let TEMP_PUBLIC_API_URL = "https://52.35.36.1:8081"
 
 export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const [modelId, setModelId] = useState<number | null>(null)
@@ -48,51 +48,47 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         setIsVerified(true)
     }
 
-
     const handleSend = async (message: Message) => {
-        const updatedMessages = [...messages, message];
-    
-        setMessages(updatedMessages);
-        setLoading(true);
-    
-    
+        const updatedMessages = [...messages, message]
+
+        setMessages(updatedMessages)
+        setLoading(true)
+
         try {
             // Here's the new part: sending the message to your backend
             // TO-DO: remove the fixed varialbe for model_id
-            let tempModelId = "1136c0c0-61c1-4eeb-a4ce-1a72f8e0ff11";
-            let address = "0x123";
+            let tempModelId = "1136c0c0-61c1-4eeb-a4ce-1a72f8e0ff11"
+            let address = "0x123"
 
             console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
             console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)
 
             console.log("accountAddress", accountAddress)
-            console.log(" message.content",  message.content)
-
+            console.log(" message.content", message.content)
 
             const response = await fetch(`${TEMP_PUBLIC_API_URL}/api/chat`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     model_id: tempModelId,
                     user_address: address,
                     message: message.content, // Assuming the message object has a content property with the text
                 }),
-            });
-    
-            console.log("!!!", response);
-            console.log("in handleSend, modelId is :", modelId);
-            console.log("in handleSend, message content is :", message.content);
+            })
 
+            console.log("!!!", response)
+            console.log("in handleSend, modelId is :", modelId)
+            console.log("in handleSend, message content is :", message.content)
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! status: ${response.status}`)
             }
-    
-            const data = await response.json();
-            console.log("Received message:", data.message);
-    
+
+            const data = await response.json()
+            console.log("Received message:", data.message)
+
             // Update the UI to include the response from the assistant
             setMessages((messages) => [
                 ...messages,
@@ -101,19 +97,18 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
                     content: data.message, // Assuming the backend responds with the message in this format
                     isNew: true,
                 },
-            ]);
-            
-            setLoading(false);
+            ])
+
+            setLoading(false)
         } catch (error) {
             if (error instanceof Response) {
-                const errorData = await error.json();
-                console.error("Error data:", errorData);
+                const errorData = await error.json()
+                console.error("Error data:", errorData)
             }
-            console.error("An error occurred while sending the message:", error);
-            setLoading(false);
+            console.error("An error occurred while sending the message:", error)
+            setLoading(false)
         }
-    };
-
+    }
 
     const fetchChatHistory = async () => {
         if (!accountAddress || !modelId) {
@@ -167,37 +162,31 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
 
             const data = await response.json()
             setModelId(data.model_id)
-            
-            console.log("now the data is,    ", data.model_id);
 
-
+            console.log("now the data is,    ", data.model_id)
         } catch (error) {
             console.error("There was a problem with the fetch operation:", error)
         }
     }
-    
 
     useEffect(() => {
-            const checkIsRegistered = async () => {
-                // if (accountInfo) {
-                    try {
-                        const response = await axios.post(
-                            `${TEMP_PUBLIC_API_URL}/api/isRegistered`,
-                            {
-                                model_id: "your_model_id", // Adjust with actual logic to obtain the model_id
-                                user_address: "user_address",
-                            }
-                        )
-                        setIsRegistered(response.data.verified)
-                    } catch (error) {
-                        console.error("Error checking registration status:", error)
-                        setIsRegistered(false) // Assuming default to not registered in case of error
-                    }
-                // }
+        const checkIsRegistered = async () => {
+            // if (accountInfo) {
+            try {
+                const response = await axios.post(`${TEMP_PUBLIC_API_URL}/api/isRegistered`, {
+                    model_id: "your_model_id", // Adjust with actual logic to obtain the model_id
+                    user_address: "user_address",
+                })
+                setIsRegistered(response.data.verified)
+            } catch (error) {
+                console.error("Error checking registration status:", error)
+                setIsRegistered(false) // Assuming default to not registered in case of error
             }
-    
-            checkIsRegistered()
-        }, [])
+            // }
+        }
+
+        checkIsRegistered()
+    }, [])
 
     useEffect(() => {
         console.log("botName:", botName)
@@ -224,8 +213,6 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         scrollToBottom()
     }, [messages, loading])
 
-
-
     return (
         <dialog id="chatModal" className="modal">
             <div className="card w-[750px]">
@@ -241,51 +228,53 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
                                         <button className="btn">Close</button>
                                     </form>
 
-
                                     <div>
+                                        {isRegistered === false && (
+                                            <div>
+                                                <button
+                                                    className="btn"
+                                                    onClick={() => {
+                                                        const modal =
+                                                            document.getElementById("my_modal_5")
+                                                        if (modal instanceof HTMLDialogElement) {
+                                                            modal.showModal()
+                                                        }
+                                                    }}
+                                                >
+                                                    create your identity
+                                                </button>
+                                                <Register
+                                                    onRegistrationSuccess={
+                                                        handleRegistrationSuccess
+                                                    }
+                                                />
+                                            </div>
+                                        )}
 
+                                        {isRegistered && (
+                                            <div>
+                                                <button
+                                                    className="btn"
+                                                    onClick={() => {
+                                                        const modal =
+                                                            document.getElementById("my_modal_4")
+                                                        if (modal instanceof HTMLDialogElement) {
+                                                            modal.showModal()
+                                                        }
+                                                    }}
+                                                >
+                                                    verify your identity
+                                                </button>
+                                                <Verify onVerifySuccess={handleVerifySuccess} />
+                                            </div>
+                                        )}
 
-                {isRegistered === false && (
-                    <div>
-                        <button
-                            className="btn"
-                            onClick={() => {
-                                const modal = document.getElementById("my_modal_5")
-                                if (modal instanceof HTMLDialogElement) {
-                                    modal.showModal()
-                                }
-                            }}
-                        >
-                            create your identity
-                        </button>
-                        <Register onRegistrationSuccess={handleRegistrationSuccess} />
-                    </div>
-                )}
-
-                
-                {isRegistered && (
-                    <div>
-                        <button
-                            className="btn"
-                            onClick={() => {
-                                const modal = document.getElementById("my_modal_4")
-                                if (modal instanceof HTMLDialogElement) {
-                                    modal.showModal()
-                                }
-                            }}
-                        >
-                            verify your identity
-                        </button>
-                        <Verify onVerifySuccess={handleVerifySuccess} />
-                    </div>
-                )}
-
-{!isVerified && (
-                <p className="fixed text-red-500 bg-opacity-75">
-                    Please verify your identity before chatting with any bot!
-                </p>
-            )}
-
+                                        {!isVerified && (
+                                            <p className="fixed text-red-500 bg-opacity-75">
+                                                Please verify your identity before chatting with
+                                                any bot!
+                                            </p>
+                                        )}
                                     </div>
                                 </label>
                             </div>
