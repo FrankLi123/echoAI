@@ -35,6 +35,21 @@ const NearWallet: React.FC<NearWalletProps> = ({
 }) => {
     const [modal, setModal] = useState<any>(null)
 
+    const disconnectWallet = async () => {
+        if (!walletSelector) return;
+        
+        // Get the currently connected wallet instance
+        const wallet = await walletSelector.wallet();
+        if (!wallet) return;
+    
+        // Use the wallet's signOut method
+        await wallet.signOut();
+    
+        // After signing out, you can update your component's state as needed
+        setAccountInfo(null); // Resets account information
+    };
+    
+
     useEffect(() => {
         const initSelector = async () => {
             const walletSelector = await setupWalletSelector({
@@ -92,9 +107,14 @@ const NearWallet: React.FC<NearWalletProps> = ({
     }, [walletSelector])
 
     return (
+        <>
         <button onClick={showWalletModal}>
             {accountInfo && accountInfo.accountId ? accountInfo.accountId : "Connect Wallet"}
         </button>
+        {accountInfo && accountInfo.accountId && (
+            <button onClick={disconnectWallet}>Disconnect Wallet</button> // This button allows the user to disconnect the wallet
+        )}
+    </>
     )
 }
 

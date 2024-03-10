@@ -57,7 +57,7 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         try {
             // Here's the new part: sending the message to your backend
             // TO-DO: remove the fixed varialbe for model_id
-            let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
+            let tempModelId = "1136c0c0-61c1-4eeb-a4ce-1a72f8e0ff11";
             let address = "0x123";
             console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
             console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)

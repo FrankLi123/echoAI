@@ -103,7 +103,7 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
                             type="text"
                             placeholder="Type here"
                             onChange={(e) => setAccountAddress(e.target.value)}
-                            className="input input-bordered w-full max-w-xs"
+                            className="input input-bordered w-full max-w-xs text-white"
                         />
                     </label>
                     <label className="form-control w-full max-w-xs">
@@ -113,7 +113,7 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
                         <input
                             type="text"
                             placeholder="Type here"
-                            className="input input-bordered w-full max-w-xs"
+                            className="input input-bordered w-full max-w-xs text-white"
                             onChange={(e) => setTokenID(e.target.value)}
                         />
                     </label>
