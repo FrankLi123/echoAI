@@ -31,6 +31,7 @@
         "@near-wallet-selector/welldone-wallet": "^8.9.5",
         "@near-wallet-selector/xdefi": "^8.9.5",
         "@tabler/icons-react": "^2.47.0",
+        "axios": "^1.6.7",
         "daisyui": "^4.7.3",
         "near-api-js": "^3.0.3",
         "next": "14.1.3",
