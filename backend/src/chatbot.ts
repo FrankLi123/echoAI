@@ -9,34 +9,36 @@ export async function chatTo(
   model_id: string,
   FLOCK_BOT_ENDPOINT: string,
   FLOCK_BOT_API_KEY: string,
-  prompt: string,
   chat_history: string[]
 ) {
-  console.log("Prompt:", prompt);
+  console.log("message:", chat_history[chat_history.length - 1]);
   console.log("Model ID:", model_id);
 
   try {
     // Construct the request payload
     const payload = {
       question: chatPrompt,
-      chat_history: chat_history,
-      knowledge_source_id: model_id,
+      chat_history: [],
+      knowledge_source_id: model_id, // replace with your model id
     };
 
     // Set the headers
     const headers = {
-      "x-api-key": FLOCK_BOT_API_KEY,
+      "x-api-key": FLOCK_BOT_API_KEY, // Ensure API key is set in .env
     };
 
     // Send POST request using axios
-    const response = await axios.post(`${FLOCK_BOT_ENDPOINT}/chat/conversational_rag_chat`, payload, {
-      headers,
-    });
+    const response = await axios.post(
+      `${FLOCK_BOT_ENDPOINT}/chat/conversational_rag_chat`,
+      payload,
+      {
+        headers,
+      }
+    );
       
     // Check if the request was successful
     if (response.status === 200) {
       // Return the answer
-      console.log("Response:", response);
       return response.data.answer;
     } else {
       console.error("Request failed with status code:", response.status);

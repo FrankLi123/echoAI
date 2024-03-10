@@ -34,7 +34,7 @@ app.post("/api/chat", async (req, res) => {
     try {
         await appendChatHistory(user_address, model_id, message, true);
         const chat_history = await getChatHistory(user_address, model_id);
-        const response = await chatTo(model_id, FLOCK_BOT_ENDPOINT, FLOCK_BOT_API_KEY, message, chat_history);
+        const response = await chatTo(model_id, FLOCK_BOT_ENDPOINT, FLOCK_BOT_API_KEY, chat_history);
         return res.status(200).send({ message: response, timestamp: new Date() });
     } catch (error) {
         return res.status(500).send({ error: (error as Error).message });
