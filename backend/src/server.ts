@@ -11,11 +11,13 @@ dotenv.config();
 const FLOCK_BOT_ENDPOINT: string = process.env.FLOCK_BOT_ENDPOINT || "none";
 const FLOCK_BOT_API_KEY: string = process.env.FLOCK_BOT_API_KEY || "none";
 
+const hostname = process.env.HOSTNAME || "localhost";
+
 const app = express();
 app.use(cors({
     origin: 'https://echo-ai-zeta.vercel.app'
 }));
-const port = process.env.PORT || 8081;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8081;
 
 // Initialize the database
 initializeDatabase();
@@ -102,6 +104,6 @@ app.get("/api/getAllChatbotsByUser", async (req, res) => {
 
 
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
     console.log(`Server running on port ${port}`);
 });
