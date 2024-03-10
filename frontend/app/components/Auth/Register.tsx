@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Verify: React.FC = () => {
+interface RegisterProps {
+    onRegistrationSuccess: () => void;
+}
+
+const Register: React.FC<RegisterProps> = ({ onRegistrationSuccess }) => {
     const [answer, setAnswer] = useState('');
     const [isVerified, setIsVerified] = useState(false); // State to track verification status
 
     const handleVerify = async () => {
         try {
-            // Mock data for model_id, secrets, user_address
-            const model_id = 'your_model_id';
-            // const secrets = ['mock_secret_1', 'mock_secret_2'];
-            const user_address = 'mock_user_address';
-
-            console.log("handleVerify, the answer is: ", answer)
-            // Send a POST request to the backend with the answer and mock data
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/verify`, {
-                model_id,
-                answer,
-                user_address,
-                
+            
+            console.log("hello!")
+            // Send a POST request to the backend with the answer
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+                model_id: 'your_model_id', // Use your model ID here
+                message: answer,
+                user_address: 'your_user_address' // Use your user address here
             });
 
             // Assuming the response data directly contains the boolean verification result
-            if (response.data.verified === true) {
+            if (response.data !== null) {
                 setIsVerified(true); // Update state if verified
+                onRegistrationSuccess();
             } else {
                 // Handle non-verification scenario as needed
                 console.log('Not verified');
@@ -37,21 +37,21 @@ const Verify: React.FC = () => {
 
     const handleClose = () => {
         // Close the dialog
-        const modal = document.getElementById('my_modal_4');
+        const modal = document.getElementById('my_modal_5');
         if (modal) {
             modal.close();
         }
     };
 
     return (
-        <dialog id="my_modal_4" className="modal">
+        <dialog id="my_modal_5" className="modal">
             <div className="modal-box w-11/12 max-w-5xl">
                 {isVerified ? (
                     <>
                         {/* Verified message with adjusted styles for narrower and lower appearance */}
                         <div className="bg-green-100 p-4 rounded-md text-center text-black">
                             <h3 className="font-bold text-lg">Congratulations!</h3>
-                            <p>Your identity has been verified.</p>
+                            <p>Your identity has been successfully registered.</p>
                         </div>
                         {/* Close button displayed alongside the message */}
                         <div className="modal-action justify-center">
@@ -60,10 +60,10 @@ const Verify: React.FC = () => {
                     </>
                 ) : (
                     <>
-                        <h3 className="font-bold text-lg">Hello!</h3>
+                        <h3 className="font-bold text-lg"> Register Your Own Identity: </h3>
                         <p className="py-4">Please answer the following question:</p>
-                        <p className="py-4"> What are your personality traits?</p>
 
+                        <p className="py-4">What is your Ideal lifestyle ? </p>
                         {/* Input text area for the answer */}
                         <textarea
                             className="border rounded-lg p-2 w-full"
@@ -74,7 +74,7 @@ const Verify: React.FC = () => {
 
                         <div className="modal-action">
                             {/* Verify button */}
-                            <button className="btn" onClick={handleVerify}>Verify</button>
+                            <button className="btn" onClick={handleVerify}>Register</button>
                             {/* Close button */}
                             <button className="btn" onClick={handleClose}>Close</button>
                         </div>
@@ -85,4 +85,4 @@ const Verify: React.FC = () => {
     );
 };
 
-export default Verify;
+export default Register;

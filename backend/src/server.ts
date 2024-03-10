@@ -2,8 +2,18 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import {initializeDatabase, getChatHistory, appendChatHistory, addUserChatbot, getChatbot, getChatbotsByUser, isExistingChatbot} from "./db";
-import { chatTo } from "./chatbot";
+import { VerifyBot, chatTo } from "./chatbot";
 import { v4 as uuidv4 } from "uuid";
+
+
+
+// Declare a Temperary Cache (store for Registration and Verification Use)
+interface ModelResponses {
+    [key: string]: any; // or replace `any` with a more specific type based on what `response` contains
+  }
+  const modelResponses: ModelResponses = {};
+
+
 // Load environment variables
 dotenv.config();
 
@@ -104,18 +114,80 @@ app.get("/api/getAllChatbotsByUser", async (req, res) => {
     }
 });
 
-app.post("/api/recover", async (req, res) => { 
-    const { model_id, secrets, user_address } = req.body;
+
+
+app.post("/api/register", async (req, res) => { 
+    const { model_id, message, user_address } = req.body;
+    
+    console.log("hello, /register is triggered.");
+
+    try {
+        // let chat_hsitory = [message];
+        let prompt =  "please summarize in 2 words from the user's answer. The user's answer is:" + message;
+        const response = await VerifyBot(model_id, FLOCK_BOT_ENDPOINT, FLOCK_BOT_API_KEY, prompt);
+
+         // Store the model_id and VerifyBot response
+         modelResponses[model_id] = response;
+         console.log("Stored model_id and response:", model_id, response);
+
+        return res.status(200).send({ message: response, timestamp: new Date() });
+    } catch (error) {
+        return res.status(500).send({ error: (error as Error).message });
+    }
+});
+
+
+app.post("/api/verify", async (req, res) => { 
+    const { model_id, answer, user_address } = req.body;
     // to-do: implement the verifySecret()
     // to-do: transfer NFT to the user
-    console.log("hello, /recover is triggered.");
+    console.log("hello, /verify is triggered. the message is:", req);
 
+    try{
+        let prompt =  "please return True is the user answer matches with the user's traits (else return false). The user answer is:" + answer  + " , the user traits are: " + modelResponses[model_id];
+    
+        console.log(" '/api/verify', the prompt is: " , prompt);
 
+        const response = await VerifyBot(model_id, FLOCK_BOT_ENDPOINT, FLOCK_BOT_API_KEY, prompt);
+        console.log("response is : ", response);
 
-
-
-    return res.status(200).send(true);
+        if (response == "True") {
+            return res.status(200).send({verified: true});
+        } else {
+            return res.status(200).send({verified: false});
+        }
+    } catch (error) {
+        console.error("Error during verification:", error);
+        // In case of error, you might want to consider what the default response should be
+        // For security reasons, defaulting to false might be safer
+        return res.status(500).send({verified: false, error: (error as Error).message});
+    }
 });
+
+
+
+
+app.post("/api/isRegistered", async (req, res) => { 
+    const { model_id } = req.body;
+    try {
+        // Check if the model_id exists in modelResponses
+        if (model_id in modelResponses) {
+
+            console.log("in /api/isRegistered, return true!");
+            // If model_id exists, you might want to do additional checks or simply return true
+            return res.status(200).send({verified: true});
+        } else {
+            // If model_id does not exist in modelResponses, return false
+            return res.status(200).send({verified: false});
+        }
+    } catch (error) {
+        console.error("Error during verification:", error);
+        // In case of error, return false for safety
+        return res.status(500).send({verified: false, error: (error as Error).message});
+    }
+});
+
+
 
 
 app.listen(port, hostname, () => {
