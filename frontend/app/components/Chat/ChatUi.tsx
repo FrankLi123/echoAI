@@ -2,11 +2,15 @@
 import { ChatInput } from "./ChatInput"
 import { Message } from "@/types"
 import { useEffect, useRef, useState } from "react"
-import { ThreeDots } from "react-loader-spinner"
 import { Chat } from "./Chat"
 import LoginPage from "../Auth/LoginPage"
 
-export default function ChatUi(props: { userName: string }) {
+interface ChatUiProps {
+    accountAddress: string
+    botName: string
+}
+
+export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const [chatSessionId, setChatSessionId] = useState<number | null>(null)
     const [chatSessions, setChatSessions] = useState<any[]>([])
     const [messages, setMessages] = useState<Message[]>([])
@@ -91,52 +95,44 @@ export default function ChatUi(props: { userName: string }) {
     }, [messages, loading])
 
     return (
-        <div className="w-full h-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-500">
-            <div
-                className="flex flex-col h-screen max-w-[100%] p-2 lg:p-24 shadow-lg"
-                style={{ overflow: "hidden" }}
-            >
-                <LoginPage />
-                {/* top bar*/}
-                <div className="p-4 bg-slate-300 rounded-tl-lg rounded-tr-lg">
-                    <div className="ml-4 flex">
-                        <div className="w-1/2">
-                            <label
-                                htmlFor="chatSessionSelect"
-                                className="block ml-1 text-sm font-bold text-gray-700"
-                            >
-                                Chat
-                            </label>
+        <dialog id="chatModal" className="modal">
+            <div className="card w-[750px]">
+                <div className="flex flex-col" style={{ overflow: "hidden" }}>
+                    <div className="p-4 bg-slate-300 rounded-tl-lg rounded-tr-lg">
+                        <div className="ml-4 flex">
+                            <div className="w-1/2">
+                                <label
+                                    htmlFor="chatSessionSelect"
+                                    className="block ml-1 text-sm font-bold text-gray-700"
+                                >
+                                    <form method="dialog">
+                                        <button className="btn">Close</button>
+                                    </form>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div
-                    style={{
-                        backgroundImage: "url('/bg.jpg')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                    className="flex-1 overflow-auto sm:px-2 pb-4 sm:pb-10 bg-slate-600 "
-                >
-                    <div className="static mx-auto mt-4 sm:mt-4 ">
-                        <div className="mt-6">
-                            <Chat messages={messages} loading={loading} />
-                            <div ref={messagesEndRef} />
+                    <div className="flex-1 overflow-auto sm:px-2 pb-4 sm:pb-10 bg-slate-600 min-h-[500px]">
+                        <div className="static mx-auto mt-4 sm:mt-4 ">
+                            <div className="mt-6">
+                                <Chat messages={messages} loading={loading} />
+                                <div ref={messagesEndRef} />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div>
                     <div>
-                        <ChatInput
-                            onSend={handleSend}
-                            onFocus={() => setIsDropdownButtonVisible(false)}
-                            onBlur={() => setIsDropdownButtonVisible(true)}
-                        />
+                        <div>
+                            <ChatInput
+                                onSend={handleSend}
+                                onFocus={() => setIsDropdownButtonVisible(false)}
+                                onBlur={() => setIsDropdownButtonVisible(true)}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </dialog>
     )
 }
