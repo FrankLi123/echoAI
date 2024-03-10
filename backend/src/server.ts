@@ -79,6 +79,8 @@ app.post("/api/createBot", async (req, res) => {
 
     try {
         const model_id = uuidv4();
+        // create chatbot using flock-api
+        // create verifybot using flock-api
         await addUserChatbot(user_address, model_id, bot_name);
         return res.status(200).send({ model_id, name: bot_name });
     } catch (error) {
@@ -102,6 +104,12 @@ app.get("/api/getAllChatbotsByUser", async (req, res) => {
     }
 });
 
+app.post("/api/recover", async (req, res) => { 
+    const { model_id, secrets, user_address } = req.body;
+    // to-do: implement the verifySecret()
+    // to-do: transfer NFT to the user
+    return res.status(200).send(true);
+});
 
 
 app.listen(port, hostname, () => {

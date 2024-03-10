@@ -44,7 +44,7 @@ export async function chatTo(
   }
 }
 
-
+// to-do: implement the verifySecret()
 
 
 // createModel() function
