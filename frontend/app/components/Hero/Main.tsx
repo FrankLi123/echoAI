@@ -46,7 +46,11 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
     return (
         <div className="w-full px-3 flex flex-row justify-between">
             <Cards accountInfo={accountInfo} />
-
+            {/* {!isVerified && (
+                <p className="fixed bottom-0 left-0 right-0 text-red-500 text-xs p-4 bg-opacity-75 text-center">
+                    Please verify your identity before chatting with any bot!
+                </p>
+            )} */}
             <div className="flex flex-col">
                 <div>
                     <button
