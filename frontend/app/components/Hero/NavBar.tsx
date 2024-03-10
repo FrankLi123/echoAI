@@ -19,6 +19,7 @@ interface NavBarProps {
     setIdentityMinted: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+
 const NavBar: React.FC<NavBarProps> = ({
     accountInfo,
     setAccountInfo,
@@ -30,10 +31,10 @@ const NavBar: React.FC<NavBarProps> = ({
     const [minting, setMinting] = useState<boolean>(false)
     const { showToast } = useToast()
 
-    const handleMint = async (data: string) => {
+    const handleMint = async (data: string, link:string) => {
         setMinting(true)
         if (accountInfo?.accountId && walletSelector) {
-            const result = await mintNFT(walletSelector, accountInfo?.accountId, data)
+            const result = await mintNFT(walletSelector, accountInfo?.accountId, data, link)
             console.log(result)
             if (result) {
                 showToast("Identity minted successfully", "success")

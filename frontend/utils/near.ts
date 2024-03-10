@@ -49,7 +49,7 @@ export async function mintNFT(walletSelector: WalletSelector, receiverId: string
     }
 
     const wallet = await walletSelector.wallet()
-    let hashed_data = data + "$#$" + uuidv4() + "$#$" +  link;
+    let hashed_data = data + "$#$" + uuidv4() + "$#$" + link;
     try {
         const functionCallDetails = {
             methodName: "nft_mint",

@@ -7,8 +7,9 @@ import { NFTStorage, File } from 'nft.storage';
 interface Props {
     accountInfo: AccountInfo | null
     minting: boolean
-    handleMint: (name: string) => Promise<void>
+    handleMint: (name: string, link: string) => Promise<void>
 }
+
 
 const MintModal: React.FC<Props> = ({ accountInfo, minting, handleMint }) => {
     const [botName, setBotName] = useState<string>("");
@@ -18,7 +19,14 @@ const MintModal: React.FC<Props> = ({ accountInfo, minting, handleMint }) => {
         throw new Error("Function not implemented.")
     }
 
-    const client = new NFTStorage({ token: process.env.NFT_STORAGE_TOKEN! });
+
+    const nftStorageToken = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
+    if (!nftStorageToken) {
+        throw new Error("NEXT_PUBLIC_NFT_STORAGE_TOKEN is not defined in your environment variables.");
+    }
+
+    const client = new NFTStorage({ token: nftStorageToken });
+
     
     const handleImageUpload = async (file: BlobPart) => {
         // Upload the file to NFT.storage and return the URL or CID
@@ -51,37 +59,25 @@ const MintModal: React.FC<Props> = ({ accountInfo, minting, handleMint }) => {
                     />
                 </label>
                 <label className="input input-bordered flex items-center gap-2 mt-8 mb-8">
-                Bot Image
-                <input
-                    type="file"
-                    accept="image/*" // Accept images of any type
-                    onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                    
-                            reader.onload = (loadEvent) => {
-                                // Adding a check to ensure loadEvent.target is not null
-                                if (loadEvent.target !== null) {
-                                    const result = loadEvent.target.result;
-                                    // Now you can safely use 'result'
-                                    // For example, setting it to state for preview
-                                    // setImagePreview(result as string);
-                                }
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    }}
-                    className="grow"
-                />
-            </label>
-
+                    Bot Image
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+                        className="grow"
+                    />
+                </label>
+                
                 <button
                     onClick={async () => {
-                        if (!accountInfo){
-                            
+                        if (!accountInfo || !botName || !imageFile) {
+                            console.log("Required information is missing.");
+                            return;
                         }
+                        
+                        //upload image
                         const imageUrl = await handleImageUpload(imageFile);
+                        
                         await handleMint(botName, imageUrl)
                     }}
                     className="btn btn-secondary"
