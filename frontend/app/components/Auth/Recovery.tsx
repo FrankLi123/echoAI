@@ -44,37 +44,37 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
         }
     }
 
-    // const handleRecovery = async () => {
-    //     try {
-    //         const response = await axios.get(
-    //             `https://gba-api.thefans.life/recover?sender=${accountAddress}&receiver=${thisAccountSddress}&token=${tokenID}`
-    //         )
-
-    //         if (response.data.status === "success") {
-    //             setTransactionId(response.data.response)
-    //             showToast("Identity has been recovered", "info")
-    //         }
-    //         console.log("Verification response:", response.data)
-    //     } catch (error) {
-    //         console.error("Error sending verification request:", error)
-    //     }
-    // }
-    const sleep = (milliseconds: number) => {
-        return new Promise((resolve) => setTimeout(resolve, milliseconds))
-    }
-
     const handleRecovery = async () => {
         try {
-            showToast("Recovery in progress", "info")
-            await sleep(3000)
-            setTransactionId(
-                "https://testnet.nearblocks.io/txns/2JX3X7aBtAY2aBqiwJRrRhhVQg88XJp2aWoeMvjBDu7c"
+            const response = await axios.get(
+                `https://gba-api.thefans.life/recover?sender=${accountAddress}&receiver=${thisAccountSddress}&token=${tokenID}`
             )
-            showToast("Identity has been recovered", "info")
+
+            if (response.data.status === "success") {
+                setTransactionId(response.data.response)
+                showToast("Identity has been recovered", "info")
+            }
+            console.log("Verification response:", response.data)
         } catch (error) {
             console.error("Error sending verification request:", error)
         }
     }
+    const sleep = (milliseconds: number) => {
+        return new Promise((resolve) => setTimeout(resolve, milliseconds))
+    }
+
+    // const handleRecovery = async () => {
+    //     try {
+    //         showToast("Recovery in progress", "info")
+    //         await sleep(3000)
+    //         setTransactionId(
+    //             "https://testnet.nearblocks.io/txns/2JX3X7aBtAY2aBqiwJRrRhhVQg88XJp2aWoeMvjBDu7c"
+    //         )
+    //         showToast("Identity has been recovered", "info")
+    //     } catch (error) {
+    //         console.error("Error sending verification request:", error)
+    //     }
+    // }
 
     const handleClose = () => {
         // Close the dialog
