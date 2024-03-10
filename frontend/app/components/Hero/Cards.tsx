@@ -55,7 +55,11 @@ const Cards: FC<CardsProps> = ({ accountInfo }) => {
                                             onClick={() => {
                                                 const modal = document.getElementById("chatModal")
                                                 if (modal instanceof HTMLDialogElement) {
-                                                    modal.showModal()
+                                                    if (accountInfo?.accountId!) {
+                                                        setAccountAddress(accountInfo?.accountId!)
+                                                        setBotName(nftData.metadata.extra)
+                                                        modal.showModal()
+                                                    }
                                                 }
                                                 return
                                             }}
