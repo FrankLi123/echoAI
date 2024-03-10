@@ -45,10 +45,8 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
     // }
 
     return (
-        <><Head>
-            {/* Correct usage of Head for setting meta tags */}
-            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-        </Head><div className="w-full px-3 flex flex-row justify-between">
+      
+      <div className="w-full px-3 flex flex-row justify-between">
                 <Cards accountInfo={accountInfo} />
 
                 <div className="flex flex-col">
@@ -67,7 +65,7 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
                         {accountInfo && <Recovery thisAccountSddress={accountInfo!.accountId} />}
                     </div>
                 </div>
-            </div></>
+            </div>
     )
 }
 

@@ -12,7 +12,7 @@ interface ChatUiProps {
     accountAddress: string
     botName: string
 }
-let TEMP_PUBLIC_API_URL = "http://52.35.36.1:8081";
+let TEMP_PUBLIC_API_URL = "https://52.35.36.1:8081";
 
 export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const [modelId, setModelId] = useState<number | null>(null)
