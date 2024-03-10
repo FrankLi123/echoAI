@@ -5,6 +5,7 @@ import Register from "../Auth/Register"
 import { AccountInfo } from "@/app/page"
 import axios from "axios"
 import Recovery from "../Auth/Recovery"
+import { Head } from "next/document"
 
 interface MainProps {
     accountInfo: AccountInfo | null
@@ -44,30 +45,29 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
     // }
 
     return (
-        <div className="w-full px-3 flex flex-row justify-between">
-            <Cards accountInfo={accountInfo} />
-            {/* {!isVerified && (
-                <p className="fixed bottom-0 left-0 right-0 text-red-500 text-xs p-4 bg-opacity-75 text-center">
-                    Please verify your identity before chatting with any bot!
-                </p>
-            )} */}
-            <div className="flex flex-col">
-                <div>
-                    <button
-                        className="btn"
-                        onClick={() => {
-                            const modal = document.getElementById("recovery")
-                            if (modal instanceof HTMLDialogElement) {
-                                modal.showModal()
-                            }
-                        }}
-                    >
-                        recovery your identity
-                    </button>
-                    {accountInfo && <Recovery thisAccountSddress={accountInfo!.accountId} />}
+        <><Head>
+            {/* Correct usage of Head for setting meta tags */}
+            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        </Head><div className="w-full px-3 flex flex-row justify-between">
+                <Cards accountInfo={accountInfo} />
+
+                <div className="flex flex-col">
+                    <div>
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                const modal = document.getElementById("recovery")
+                                if (modal instanceof HTMLDialogElement) {
+                                    modal.showModal()
+                                }
+                            } }
+                        >
+                            recovery your identity
+                        </button>
+                        {accountInfo && <Recovery thisAccountSddress={accountInfo!.accountId} />}
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div></>
     )
 }
 
