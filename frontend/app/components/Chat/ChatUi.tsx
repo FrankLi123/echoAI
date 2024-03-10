@@ -35,29 +35,58 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     }
 
     const handleSend = async (message: Message) => {
-        const updatedMessages = [...messages, message]
-
-        setMessages(updatedMessages)
-        setLoading(true)
-
+        const updatedMessages = [...messages, message];
+    
+        setMessages(updatedMessages);
+        setLoading(true);
+    
         try {
-            //   const data = await response.json();
-            // console.log(data.user_email)
-            await delay(1000)
-            setLoading(false)
-            // console.log("Received message:", data.message)
+            // Here's the new part: sending the message to your backend
+
+
+            // TO-DO: remove the fixed varialbe for model_id
+            let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
+
+
+            const response = await fetch('http://localhost:8081/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model_id: tempModelId,
+                    user_address: accountAddress,
+                    message: message.content, // Assuming the message object has a content property with the text
+                }),
+            });
+    
+            console.log("in handleSend, modelId is :", modelId);
+            console.log("in handleSend, message content is :", message.content);
+
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Received message:", data.message);
+    
+            // Update the UI to include the response from the assistant
             setMessages((messages) => [
                 ...messages,
                 {
                     role: "assistant",
-                    content: "This is a response from the assistant.",
+                    content: data.message, // Assuming the backend responds with the message in this format
                     isNew: true,
                 },
-            ])
+            ]);
+            
+            setLoading(false);
         } catch (error) {
-            console.error("An error occurred while sending the message:", error)
+            console.error("An error occurred while sending the message:", error);
+            setLoading(false);
         }
-    }
+    };
 
     const fetchChatHistory = async () => {
         if (!accountAddress || !modelId) {
