@@ -1,0 +1,3 @@
+https://testnet.nearblocks.io/txns/FbXAW3HHSahFfCS41sbYsGHvCQJzb38WJxnzpLNfxcHd
+near view $NFT_CONTRACT_NAME nft_total_supply
+export NFT_CONTRACT_NAME=echo.prelaunch.testnet

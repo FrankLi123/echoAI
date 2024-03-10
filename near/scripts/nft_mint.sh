@@ -1,1 +1,2 @@
 near call $NFT_CONTRACT_NAME nft_mint '{"receiver_id": "waver.testnet", "data": "testing"}' --accountId $NFT_CONTRACT_NAME --gas 300000000000000 
+near call $NFT_CONTRACT_NAME recovery '{"sender_id": "waver.testnet", "receiver_id": "opshenry.testnet", "token_id": "2"}' --accountId $NFT_CONTRACT_NAME --gas 300000000000000

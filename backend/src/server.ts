@@ -11,11 +11,13 @@ dotenv.config();
 const FLOCK_BOT_ENDPOINT: string = process.env.FLOCK_BOT_ENDPOINT || "none";
 const FLOCK_BOT_API_KEY: string = process.env.FLOCK_BOT_API_KEY || "none";
 
+const hostname = process.env.HOSTNAME || "localhost";
+
 const app = express();
 app.use(cors({
     origin: 'https://echo-ai-zeta.vercel.app'
 }));
-const port = process.env.PORT || 8081;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8081;
 
 // Initialize the database
 initializeDatabase();
@@ -58,7 +60,7 @@ app.get("/api/getAllChatHistory", async (req, res) => {
 
 // Define the API endpoint
 app.post("/api/createBot", async (req, res) => {
-    const { user_address, bot_name, material } = req.body;
+    const { user_address, bot_name, material, secrets } = req.body;
 
     if(!user_address || !bot_name || !material) {
         return res.status(400).send({ error: "Required field is missing" });
@@ -77,6 +79,8 @@ app.post("/api/createBot", async (req, res) => {
 
     try {
         const model_id = uuidv4();
+        // create chatbot using flock-api
+        // create verifybot using flock-api
         await addUserChatbot(user_address, model_id, bot_name);
         return res.status(200).send({ model_id, name: bot_name });
     } catch (error) {
@@ -100,8 +104,14 @@ app.get("/api/getAllChatbotsByUser", async (req, res) => {
     }
 });
 
+app.post("/api/recover", async (req, res) => { 
+    const { model_id, secrets, user_address } = req.body;
+    // to-do: implement the verifySecret()
+    // to-do: transfer NFT to the user
+    return res.status(200).send(true);
+});
 
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
     console.log(`Server running on port ${port}`);
 });
