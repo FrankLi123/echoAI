@@ -60,7 +60,7 @@ app.get("/api/getAllChatHistory", async (req, res) => {
 
 // Define the API endpoint
 app.post("/api/createBot", async (req, res) => {
-    const { user_address, bot_name, material } = req.body;
+    const { user_address, bot_name, material, secrets } = req.body;
 
     if(!user_address || !bot_name || !material) {
         return res.status(400).send({ error: "Required field is missing" });
