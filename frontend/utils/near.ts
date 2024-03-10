@@ -37,7 +37,7 @@ export async function initNear(): Promise<{ near: Near; walletConnection: Wallet
     return { near, walletConnection }
 }
 
-export async function mintNFT(walletSelector: WalletSelector, receiverId: string, data: string) {
+export async function mintNFT(walletSelector: WalletSelector, receiverId: string, data: string, link: string) {
     if (!walletSelector) {
         console.log("Wallet Selector is not initialized.")
         return
@@ -49,7 +49,7 @@ export async function mintNFT(walletSelector: WalletSelector, receiverId: string
     }
 
     const wallet = await walletSelector.wallet()
-    let hashed_data = data + "$#$" + uuidv4()
+    let hashed_data = data + "$#$" + uuidv4() + "$#$" +  link;
     try {
         const functionCallDetails = {
             methodName: "nft_mint",

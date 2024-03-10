@@ -33,6 +33,11 @@ const NavBar: React.FC<NavBarProps> = ({
     const handleMint = async (data: string) => {
         setMinting(true)
         if (accountInfo?.accountId && walletSelector) {
+            
+            console.log("walletSelector", walletSelector);
+            console.log("accountInfo?.accountId", accountInfo?.accountId);
+            console.log("data", data);
+            
             const result = await mintNFT(walletSelector, accountInfo?.accountId, data)
             console.log(result)
             if (result) {
