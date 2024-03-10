@@ -11,7 +11,7 @@ interface MainProps {
 
 const Main: React.FC<MainProps> = ({ accountInfo }) => {
     const [isRegistered, setIsRegistered] = useState<boolean | null>(null);
-
+    const [isVerified, setIsVerified] = useState<boolean | null>(null);
     useEffect(() => {
 
         const checkIsRegistered = async () => {
@@ -37,9 +37,19 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
         setIsRegistered(true);
     };
 
+    const handleVerifySuccess = () => {
+        setIsVerified(true);
+    };
+
     return (
         <div className="w-full px-3 flex flex-row justify-between">
+           
             <Cards accountInfo={accountInfo} />
+            {!isVerified && (
+    <p className="fixed bottom-0 left-0 right-0 text-red-500 text-xs p-4 bg-opacity-75 text-center">
+        Please verify your identity before chatting with any bot!
+    </p>
+)}
 
             {isRegistered === false && (
                 <div>
@@ -54,7 +64,7 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
                     >
                         create your identity
                     </button>
-                    <Register  onRegistrationSuccess={handleRegistrationSuccess}  />
+                    <Register  onRegistrationSuccess={handleRegistrationSuccess}/>
                 </div>
             )}
 
@@ -71,7 +81,7 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
                     >
                         verify your identity
                     </button>
-                    <Verify />
+                    <Verify onVerifySuccess={handleVerifySuccess} />
                 </div>
             )}
         </div>

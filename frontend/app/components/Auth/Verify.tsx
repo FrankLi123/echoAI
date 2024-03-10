@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Verify: React.FC = () => {
+
+interface VerifyProps {
+    onVerifySuccess: () => void;
+}
+
+const Verify: React.FC<VerifyProps>  = ({ onVerifySuccess }) => {
     const [answer, setAnswer] = useState('');
     const [isVerified, setIsVerified] = useState(false); // State to track verification status
 
@@ -24,6 +29,7 @@ const Verify: React.FC = () => {
             // Assuming the response data directly contains the boolean verification result
             if (response.data.verified === true) {
                 setIsVerified(true); // Update state if verified
+                onVerifySuccess();
             } else {
                 // Handle non-verification scenario as needed
                 console.log('Not verified');
