@@ -84,13 +84,28 @@ impl Contract {
         (self.index.to_string(), self.index)
     }
 
+    pub fn recovery( &mut self,
+        sender_id: AccountId,
+        receiver_id: AccountId,
+        token_id: TokenId,
+    ) {
+        assert_self();
+        self.internal_transfer(
+            &sender_id,
+            &receiver_id,
+            &token_id,
+            None,
+            Option::None
+        );
+    }
+
     #[payable]
     pub fn nft_mint(
         &mut self,
         receiver_id: AccountId,
         data: String
     ) -> Vec<TokenId> {
-        assert_self();
+        // assert_self();
         let mut tokens = Vec::new();
         let (token_id, token_index) = self.get_index();
         let token = Token {
