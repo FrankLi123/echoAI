@@ -16,14 +16,10 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <><Head>
-            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-        </Head>
-        
         <html lang="en" data-theme="synthwave">
                 <body className={inter.className}>
                     {children}
                 </body>
-            </html></>
+            </html>
     )
 }
