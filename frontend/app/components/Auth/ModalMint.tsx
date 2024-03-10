@@ -81,9 +81,7 @@ const MintModal: React.FC<Props> = ({ accountInfo, minting, handleMint }) => {
                         if (!accountInfo){
                             
                         }
-
                         const imageUrl = await handleImageUpload(imageFile);
-
                         await handleMint(botName, imageUrl)
                     }}
                     className="btn btn-secondary"
