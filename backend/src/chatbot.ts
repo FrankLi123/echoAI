@@ -9,15 +9,15 @@ export async function chatTo(
   model_id: string,
   FLOCK_BOT_ENDPOINT: string,
   FLOCK_BOT_API_KEY: string,
-  chat_history: string[]
+  chat_history: string[],
+  message: string
 ) {
-  console.log("message:", chat_history[chat_history.length - 1]);
+  console.log("message:", message);
   console.log("Model ID:", model_id);
-
   try {
     // Construct the request payload
     const payload = {
-      question: chatPrompt,
+      question: `User said: ${message}\n\n${chatPrompt}`,
       chat_history: [],
       knowledge_source_id: model_id, // replace with your model id
     };
