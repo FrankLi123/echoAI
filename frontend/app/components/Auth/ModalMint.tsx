@@ -13,14 +13,16 @@ interface Props {
 
 const MintModal: React.FC<Props> = ({ accountInfo, minting, handleMint }) => {
     const [botName, setBotName] = useState<string>("");
-    const [imageFile, setImageFile] = useState(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
     function setImagePreview(result: string | ArrayBuffer | null): any {
         throw new Error("Function not implemented.")
     }
 
+    // const nftStorageToken = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
+    // console.log("!!!!!!!", process.env.NEXT_PUBLIC_API_URL);
+    const nftStorageToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGVBQWNlODk5YjgyZWZDREZjN0M1OGE5MEZlNTBmZEJlQTUxM2JkY2MiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcxMDA2NDYzMzM4OCwibmFtZSI6ImhhY2thdGhvbiJ9.H70qFjsNLRKRodgOKVX42VqFf873Y5lJT9XDgZxcS6A";
 
-    const nftStorageToken = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
     if (!nftStorageToken) {
         throw new Error("NEXT_PUBLIC_NFT_STORAGE_TOKEN is not defined in your environment variables.");
     }

@@ -79,8 +79,8 @@ const Recovery: React.FC<RecoveryProps> = ({ thisAccountSddress }) => {
     const handleClose = () => {
         // Close the dialog
         const modal = document.getElementById("recovery")
-        if (modal) {
-            modal.close()
+        if (modal instanceof HTMLDialogElement) {
+            modal.close();
         }
     }
 

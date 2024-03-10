@@ -38,7 +38,7 @@ const Register: React.FC<RegisterProps> = ({ onRegistrationSuccess }) => {
     const handleClose = () => {
         // Close the dialog
         const modal = document.getElementById('my_modal_5');
-        if (modal) {
+        if (modal instanceof HTMLDialogElement) {
             modal.close();
         }
     };

@@ -4,6 +4,9 @@ import { Message } from "@/types"
 import { useEffect, useRef, useState } from "react"
 import { Chat } from "./Chat"
 import LoginPage from "../Auth/LoginPage"
+import axios from "axios"
+import Register from "../Auth/Register"
+import Verify from "../Auth/Verify"
 
 interface ChatUiProps {
     accountAddress: string
@@ -16,6 +19,8 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const isMounted = useRef<boolean>(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
+    const [isRegistered, setIsRegistered] = useState<boolean | null>(null)
+    const [isVerified, setIsVerified] = useState<boolean | null>(null)
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -34,6 +39,14 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         ])
     }
 
+    const handleRegistrationSuccess = () => {
+        setIsRegistered(true)
+    }
+
+    const handleVerifySuccess = () => {
+        setIsVerified(true)
+    }
+
     const handleSend = async (message: Message) => {
         const updatedMessages = [...messages, message];
     
@@ -42,14 +55,6 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
     
         try {
             // Here's the new part: sending the message to your backend
-
-
-            // TO-DO: remove the fixed varialbe for model_id
-            // let tempModelId = "cltjkj8pc0001qijg3lqkdhmr";
-
-            console.log("${process.env.NEXT_PUBLIC_API_URL} is: ", process.env.NEXT_PUBLIC_API_URL)
-            console.log("${process.env.FLOCK_BOT_API_KEY} is: ", process.env.FLOCK_BOT_API_KEY)
-            console.log("modelId is: ", modelId)
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
                 method: 'POST',
@@ -152,6 +157,29 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         }
     }
     
+
+    useEffect(() => {
+            const checkIsRegistered = async () => {
+                // if (accountInfo) {
+                    try {
+                        const response = await axios.post(
+                            `${process.env.NEXT_PUBLIC_API_URL}/api/isRegistered`,
+                            {
+                                model_id: "your_model_id", // Adjust with actual logic to obtain the model_id
+                                user_address: "user_address",
+                            }
+                        )
+                        setIsRegistered(response.data.verified)
+                    } catch (error) {
+                        console.error("Error checking registration status:", error)
+                        setIsRegistered(false) // Assuming default to not registered in case of error
+                    }
+                // }
+            }
+    
+            checkIsRegistered()
+        }, [])
+
     useEffect(() => {
         console.log("botName:", botName)
 
@@ -177,6 +205,8 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
         scrollToBottom()
     }, [messages, loading])
 
+
+
     return (
         <dialog id="chatModal" className="modal">
             <div className="card w-[750px]">
@@ -191,6 +221,53 @@ export const ChatUi: React.FC<ChatUiProps> = ({ accountAddress, botName }) => {
                                     <form method="dialog">
                                         <button className="btn">Close</button>
                                     </form>
+
+
+                                    <div>
+
+
+                {isRegistered === false && (
+                    <div>
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                const modal = document.getElementById("my_modal_5")
+                                if (modal instanceof HTMLDialogElement) {
+                                    modal.showModal()
+                                }
+                            }}
+                        >
+                            create your identity
+                        </button>
+                        <Register onRegistrationSuccess={handleRegistrationSuccess} />
+                    </div>
+                )}
+
+                
+                {isRegistered && (
+                    <div>
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                const modal = document.getElementById("my_modal_4")
+                                if (modal instanceof HTMLDialogElement) {
+                                    modal.showModal()
+                                }
+                            }}
+                        >
+                            verify your identity
+                        </button>
+                        <Verify onVerifySuccess={handleVerifySuccess} />
+                    </div>
+                )}
+
+{!isVerified && (
+                <p className="fixed text-red-500 bg-opacity-75">
+                    Please verify your identity before chatting with any bot!
+                </p>
+            )}
+
+                                    </div>
                                 </label>
                             </div>
                         </div>
