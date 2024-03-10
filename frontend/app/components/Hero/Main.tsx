@@ -96,7 +96,7 @@ const Main: React.FC<MainProps> = ({ accountInfo }) => {
                     >
                         recovery your identity
                     </button>
-                    <Recovery thisAccountSddress={accountInfo!.accountId} />
+                    {accountInfo && <Recovery thisAccountSddress={accountInfo!.accountId} />}
                 </div>
             </div>
         </div>
