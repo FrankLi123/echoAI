@@ -27,7 +27,6 @@ app.use(express.json()); // Middleware to parse JSON bodies
 // Define the API endpoint
 app.post("/api/chat", async (req, res) => {
     const { model_id, user_address, message } = req.body;
-
     if(!model_id || !user_address || !message) {
         return res.status(400).send({ error: "Required field is missing" });
     }

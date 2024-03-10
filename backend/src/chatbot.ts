@@ -13,6 +13,7 @@ export async function chatTo(
   chat_history: string[]
 ) {
   console.log("Prompt:", prompt);
+  console.log("Model ID:", model_id);
 
   try {
     // Construct the request payload
@@ -28,19 +29,20 @@ export async function chatTo(
     };
 
     // Send POST request using axios
-    const response = await axios.post(FLOCK_BOT_ENDPOINT, payload, {
+    const response = await axios.post(`${FLOCK_BOT_ENDPOINT}/chat/conversational_rag_chat`, payload, {
       headers,
     });
       
     // Check if the request was successful
     if (response.status === 200) {
       // Return the answer
+      console.log("Response:", response);
       return response.data.answer;
     } else {
       console.error("Request failed with status code:", response.status);
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Flock API Error:", (error as Error).message);
   }
 }
 
