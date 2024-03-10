@@ -15,7 +15,7 @@ const hostname = process.env.HOSTNAME || "localhost";
 
 const app = express();
 app.use(cors({
-    origin: 'https://echo-ai-zeta.vercel.app'
+    origin: ['http://localhost:3000', 'https://echo-ai-zeta.vercel.app']
 }));
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8081;
 
@@ -80,6 +80,7 @@ app.post("/api/createBot", async (req, res) => {
         const model_id = uuidv4();
         // create chatbot using flock-api
         // create verifybot using flock-api
+
         await addUserChatbot(user_address, model_id, bot_name);
         return res.status(200).send({ model_id, name: bot_name });
     } catch (error) {
@@ -107,6 +108,9 @@ app.post("/api/recover", async (req, res) => {
     const { model_id, secrets, user_address } = req.body;
     // to-do: implement the verifySecret()
     // to-do: transfer NFT to the user
+
+    console.log("hello, /recover is triggered.");
+
     return res.status(200).send(true);
 });
 
